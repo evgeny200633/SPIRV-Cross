@@ -36,15 +36,17 @@ enable_testing()
 
 include(GNUInstallDirs)
 
-option(SPIRV_CROSS_EXCEPTIONS_TO_ASSERTIONS "Instead of throwing exceptions assert" OFF)
+set(SPIRV_CROSS_FOLDER "Third Party/SPIRV-Cross")
+
+option(SPIRV_CROSS_EXCEPTIONS_TO_ASSERTIONS "Instead of throwing exceptions assert" ON)
 option(SPIRV_CROSS_SHARED "Build the C API as a single shared library." OFF)
 option(SPIRV_CROSS_STATIC "Build the C and C++ API as static libraries." ON)
-option(SPIRV_CROSS_CLI "Build the CLI binary. Requires SPIRV_CROSS_STATIC." ON)
-option(SPIRV_CROSS_ENABLE_TESTS "Enable SPIRV-Cross tests." ON)
+option(SPIRV_CROSS_CLI "Build the CLI binary. Requires SPIRV_CROSS_STATIC." OFF)
+option(SPIRV_CROSS_ENABLE_TESTS "Enable SPIRV-Cross tests." OFF)
 
 option(SPIRV_CROSS_ENABLE_GLSL "Enable GLSL support." ON)
 option(SPIRV_CROSS_ENABLE_HLSL "Enable HLSL target support." ON)
-option(SPIRV_CROSS_ENABLE_MSL "Enable MSL target support." ON)
+option(SPIRV_CROSS_ENABLE_MSL "Enable MSL target support." OFF)
 option(SPIRV_CROSS_ENABLE_CPP "Enable C++ target support." ON)
 option(SPIRV_CROSS_ENABLE_REFLECT "Enable JSON reflection target support." ON)
 option(SPIRV_CROSS_ENABLE_C_API "Enable C API wrapper support in static library." ON)
@@ -174,7 +176,8 @@ macro(spirv_cross_add_library name config_name library_type)
 			$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
 			$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/spirv_cross>)
 	set_target_properties(${name} PROPERTIES
-			PUBLIC_HEADERS "${hdrs}")
+			PUBLIC_HEADERS "${hdrs}"
+			FOLDER "${SPIRV_CROSS_FOLDER}")
 	if (SPIRV_CROSS_FORCE_PIC)
 		set_target_properties(${name} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 	endif()
